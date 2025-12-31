@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy New Year ✨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background: radial-gradient(circle at bottom, #020111, #000000);
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+}
+
+/* Center containers */
+.container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.9);
+}
+
+/* Input UI */
+input {
+    padding: 14px 18px;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    margin-top: 15px;
+    width: 240px;
+    text-align: center;
+}
+
+button {
+    margin-top: 18px;
+    padding: 12px 34px;
+    font-size: 16px;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(45deg, gold, orange, red);
+    color: black;
+    font-weight: bold;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 40px gold;
+}
+
+/* Celebration Text */
+h1 {
+    font-size: 3.5rem;
+    animation: glow 2s infinite alternate;
+}
+
+#nameText {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeUp 2s forwards;
+    animation-delay: 1.5s;
+}
+
+/* Animations */
+@keyframes glow {
+    from { text-shadow: 0 0 10px gold; }
+    to { text-shadow: 0 0 35px gold; }
+}
+
+@keyframes fadeUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Firework particles */
+.firework {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: explode 1.8s ease-out forwards;
+}
+
+@keyframes explode {
+    from {
+        transform: translate(0,0);
+        opacity: 1;
+    }
+    to {
+        transform: translate(var(--x), var(--y));
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Name Input Screen -->
+<div class="container" id="formBox">
+    <h2>✨ Enter Your Name ✨</h2>
+    <input type="text" id="nameInput" placeholder="Your Name">
+    <button onclick="startCelebration()">Celebrate 🎉</button>
+</div>
+
+<!-- Celebration Screen -->
+<div class="container hidden" id="wishBox">
+    <h1>🎆 Happy New Year 2025 🎆</h1>
+    <div id="nameText"></div>
+</div>
+
+<script>
+function startCelebration() {
+    const name = document.getElementById("nameInput").value.trim();
+    if (!name) {
+        alert("Please enter your name");
+        return;
+    }
+
+    document.getElementById("formBox").classList.add("hidden");
+
+    setTimeout(() => {
+        document.getElementById("wishBox").classList.remove("hidden");
+        document.getElementById("nameText").innerText = "With love, " + name + " ✨";
+    }, 1000);
+
+    // Start fireworks after short delay
+    setTimeout(() => {
+        setInterval(createFireworkBurst, 700);
+    }, 1600);
+}
+
+function createFireworkBurst() {
+    const colors = ["gold", "red", "orange", "cyan", "lime", "pink"];
+
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight * 0.7;
+
+    for (let i = 0; i < 40; i++) {
+        const spark = document.createElement("div");
+        spark.className = "firework";
+        spark.style.left = x + "px";
+        spark.style.top = y + "px";
+        spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 180 + 60;
+
+        spark.style.setProperty("--x", Math.cos(angle) * distance + "px");
+        spark.style.setProperty("--y", Math.sin(angle) * distance + "px");
+
+        document.body.appendChild(spark);
+
+        setTimeout(() => spark.remove(), 1800);
+    }
+}
+</script>
+
+</body>
+</html>
